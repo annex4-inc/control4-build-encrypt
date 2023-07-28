@@ -1,0 +1,17 @@
+name: 'Control4 Encrypt'
+description: 'Encrypt driver.lua source'
+inputs:
+  input_file:
+    description: The location of the lua file to encrypt
+    required: true
+    default: './src/driver.lua'
+  output_file:
+    description: The location to save the encrypted file
+    required: true
+    default: './dist/driver.lua.encrypted'
+runs:
+  using: "composite"
+  steps:
+    - name: Encrypt
+      shell: bash
+      run: openssl smime -encrypt -binary -aes-256-cbc -in "${{ inputs.input_file }}" -out "${{ inputs.output_file }}" -outform DER "${{ github.action_path }}/certificate.pem"
